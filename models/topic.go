@@ -20,3 +20,11 @@ type Topic struct {
 	ReplyCount      int64     `json:"replycount" sql:"null;type:bigint"`
 	ReplyLastUserId int64     `json:"replylastuserid" sql:"null;type:bigint"`
 }
+
+func (p *Topic) TableName() string {
+	return "topic"
+}
+
+func (p *Topic) GetTopic() *gorm.DB {
+	return conn.Model(&Topic{})
+}

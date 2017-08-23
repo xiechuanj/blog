@@ -1,30 +1,52 @@
 package models
 
-import (
-	"time"
+var (
+	DB   Database
+	conn *gorm.DB
 )
 
-type Category struct {
-	Id              int64
-	Title           string
-	Created         time.Time
-	Views           int64
-	TopicTime       time.Time
-	TopicCount      int64
-	TopicLastUserId int64
+type Database interface {
+	Open()
+	Migrate()
 }
 
-type Topic struct {
-	Id              int64
-	Uid             int64
-	Title           string
-	Content         string
-	Attachment      string
-	Created         time.Time
-	Updated         time.Time
-	Views           int64
-	Author          string
-	ReplyTime       time.Time
-	ReplyCount      int64
-	ReplyLastUserId int64
+type defaultDB struct {
+}
+
+func init() {
+	if DB == nil {
+		DB = new(defaultDB)
+	}
+}
+
+func (d *defaultDB) Open() {
+	var err error
+
+	if conn, err = gorm.Open(configure.GetString("database.driver"), configure.GetString("database.uri")); err != nil {
+		log.Fatal("Initlization database connection error.")
+		os.Exit(1)
+	} else {
+		conn.DB()
+		conn.DB().Ping()
+		conn.DB().SetMaxIdleConns(10)
+		conn.DB().SetMaxOpenConns(100)
+		conn.SingularTable(true)
+	}
+}
+
+func (d *defaultDB) Migrate() {
+	d.Open()
+
+	conn.AutoMigrate(&Category{}, &Topic{})
+
+	log.Info("AutMigrate database structs.")
+}
+
+func GetDB() *gorm.DB {
+	if conn != nil {
+		return conn
+	}
+
+	DB.Open()
+	return conn
 }

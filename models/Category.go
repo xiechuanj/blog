@@ -15,3 +15,11 @@ type Category struct {
 	TopicCount      int64     `json:"topiccount" sql:"null;type:bigint"`
 	TopicLastUserId int64     `json:"topiclastuserid" sql:"null;type:bigint"`
 }
+
+func (p *Category) TableName() string {
+	return "category"
+}
+
+func (p *Category) GetCategory() *gorm.DB {
+	return conn.Model(&Category{})
+}

@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/macaron.v1"
 
-	"github.com/xiechuanj/Blog/models"
-	"github.com/xiechuanj/Blog/module"
-	"github.com/xiechuanj/Blog/utils"
-	"github.com/xiechuanj/Blog/web"
+	"github.com/xiechuanj/blog/models"
+	"github.com/xiechuanj/blog/module"
+	"github.com/xiechuanj/blog/utils"
+	"github.com/xiechuanj/blog/web"
 )
 
 var address string

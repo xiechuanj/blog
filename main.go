@@ -7,6 +7,10 @@ import (
 	"github.com/xiechuanj/blog/cmd"
 )
 
+func init() {
+	//
+}
+
 func main() {
 	if err := cmd.RootCmd.Execute(); err != nil {
 		fmt.Println(err)
