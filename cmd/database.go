@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/xiechuanj/blog/models"
 )
@@ -33,6 +34,7 @@ var restoreDatabaseCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("11111111111")
 	RootCmd.AddCommand(databaseCmd)
 
 	databaseCmd.AddCommand(migrateDatabaseCmd)

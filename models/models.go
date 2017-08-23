@@ -1,5 +1,14 @@
 package models
 
+import (
+	log "github.com/Sirupsen/logrus"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"os"
+
+	"github.com/xiechuanj/blog/configure"
+)
+
 var (
 	DB   Database
 	conn *gorm.DB
