@@ -11,8 +11,9 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/macaron.v1"
 
+	"github.com/xiechuanj/blog/configure"
 	"github.com/xiechuanj/blog/models"
-	"github.com/xiechuanj/blog/module"
+	// "github.com/xiechuanj/blog/module"
 	"github.com/xiechuanj/blog/utils"
 	"github.com/xiechuanj/blog/web"
 )
@@ -20,12 +21,14 @@ import (
 var address string
 var port int64
 
+// webCmd is subcommand which start/stop/monitor Blog's REST API daemon.
 var daemonCmd = &cobra.Command{
 	Use:   "daemon",
 	Short: "Web subcommand start/stop/monitor Blog's REST API daemon.",
 	Long:  ``,
 }
 
+// start Blog deamon subcommand
 var startDaemonCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start Blog's REST API daemon.",
@@ -33,6 +36,7 @@ var startDaemonCmd = &cobra.Command{
 	Run:   startDeamon,
 }
 
+// stop Blog deamon subcommand
 var stopDaemonCmd = &cobra.Command{
 	Use:   "stop",
 	Short: "stop Blog's REST API daemon.",
@@ -40,6 +44,7 @@ var stopDaemonCmd = &cobra.Command{
 	Run:   stopDaemon,
 }
 
+// monitor Blog deamon subcommand
 var monitorDeamonCmd = &cobra.Command{
 	Use:   "monitor",
 	Short: "monitor Blog's REST API daemon.",
@@ -47,26 +52,34 @@ var monitorDeamonCmd = &cobra.Command{
 	Run:   monitorDaemon,
 }
 
+// init()
 func init() {
 	RootCmd.AddCommand(daemonCmd)
 
+	// Add start subcommand
 	daemonCmd.AddCommand(startDaemonCmd)
 	startDaemonCmd.Flags().StringVarP(&address, "address", "a", "0.0.0.0", "http or https listen address.")
 	startDaemonCmd.Flags().Int64VarP(&port, "port", "p", 80, "the port of http.")
 
+	// Add stop subcommand
 	daemonCmd.AddCommand(stopDaemonCmd)
+	// Add daemon subcommand
 	daemonCmd.AddCommand(monitorDeamonCmd)
 }
 
+// startDeamon() start Blog's REST API daemon.
 func startDeamon(cmd *cobra.Command, args []string) {
 	log.SetOutput(os.Stdout)
 
+	// first open database conn
 	models.DB.Open()
 
-	module.InitTimerTask()
+	// load all timer
+	// module.InitTimerTask()
 
 	m := macaron.New()
 
+	// Set Macaron Web Middleware And Routers
 	web.SetBlogdMacaron(m)
 
 	listenMode := configure.GetString("listenmode")
@@ -106,10 +119,12 @@ func startDeamon(cmd *cobra.Command, args []string) {
 	}
 }
 
+// stopDaemon() stop Blog's REST API daemon.
 func stopDaemon(cmd *cobra.Command, args []string) {
 
 }
 
+// monitordAemon() monitor Blog's REST API deamon.
 func monitorDaemon(cmd *cobra.Command, args []string) {
 
 }

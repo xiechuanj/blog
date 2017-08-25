@@ -9,11 +9,11 @@ import (
 
 const (
 	//ConfigName using in the config file name or environment variable prefix.
-	ConfigName = "containerops"
+	ConfigName = "blog"
 	//ConfigFileEtcPath is the config file in the /etc path.
-	ConfigFileEtcPath = "/etc/containerops"
+	ConfigFileEtcPath = "/etc/blog"
 	//configFileHomePath is the config file in the user root path, like `/home/genendna/.containerops`
-	configFileHomePath = "$HOME/.containerops"
+	configFileHomePath = "$HOME/.blog"
 	//configFileInclude is the config file in the project path, usual in the `conf` folder.
 	configFileInclude = "./conf"
 )
@@ -91,7 +91,6 @@ func GetInt(key string) int {
 
 //GetString is encapsulation of viper.GetString().
 func GetString(key string) string {
-	fmt.Println("11111111111111")
 	if configEnv.IsSet(key) == true {
 		return configEnv.GetString(key)
 	}

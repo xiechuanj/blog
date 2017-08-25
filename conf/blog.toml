@@ -8,7 +8,7 @@ email = "xiechuanj@gmail.com"
 runmode = "dev"
 
 listenmode = "http"
-projectaddr = "192.168.1.214:10000"
+projectaddr = "127.0.0.1:10000"
 httpscertfile = "cert/blog/blog.crt"
 httpskeyfile = "cert/blog/blog.key"
 
@@ -18,4 +18,4 @@ level = "info"
 
 [database]
 driver = "mysql"
-uri = "root:123456@tcp(127.0.0.1:3306)/?charset=utf8&parseTime=True&loc=Asia%2FShanghai"
+uri = "root:123456@tcp(127.0.0.1:3306)/blog?charset=utf8&parseTime=True&loc=Asia%2FShanghai"
