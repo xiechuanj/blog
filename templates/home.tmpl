@@ -1,0 +1,26 @@
+{{template "base/header" .}}
+
+    <title>首页 - 小船的博客</title>
+  </head> 
+  <body> 
+	  <div class="navbar navbar-default navbar-fixed-top">
+	  	<div class="container">
+  		{{template "base/navbar" .}}
+  		</div>
+	  <div class="container">
+	  	{{range .Topics}}
+	  	<div class="page-header">
+	  	    <br>
+	  		<h1>{{.title}}</h1>
+	  		<h6 class="text-muted">文章发表于{{.created}}， 共有{{.views}} 次浏览， {{.replycount}}个评论</h6>
+	  		<p>
+	  			{{.content}}
+	  		</p>
+	  	</div>
+	  	{{end}}
+	  </div>
+
+	  <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  </body> 
+</html>

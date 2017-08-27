@@ -29,10 +29,14 @@ func init() {
 // SetMiddlewares is
 func SetMiddlewares(m *macaron.Macaron) {
 	//Set static file directory,static file access without log output
-	m.Use(macaron.Static("external", macaron.StaticOptions{
+	m.Use(macaron.Static("public", macaron.StaticOptions{
 		Expires: func() string { return "max-age=0" },
 	}))
-
+	m.Use(macaron.Renderer(macaron.RenderOptions{
+		Directory:  "templates",
+		Charset:    "UTF-8",
+		IndentJSON: true,
+	}))
 	//Set recovery handler to returns a middleware that recovers from any panics
 	m.Use(macaron.Recovery())
 

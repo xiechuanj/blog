@@ -1,0 +1,58 @@
+{{template "base/header" .}}
+
+    <title>分类 - 小船的博客</title>
+  </head> 
+  <body> 
+	  <div class="navbar navbar-default navbar-fixed-top">
+	  	<div class="container">
+  		{{template "base/navbar" .}}
+  		</div>
+  	  </div>
+
+	  <div class="container">
+	  	<br>
+	  	<br>
+	  	<h1>分类列表</h1>
+	  	{{if .IsLogin}}
+	  	<form method="GET" action="/category">
+	  	  <div class="form-group">
+	  	    <label>分类名称</label>
+	  	    <input class="form-control" placeholder="请输入分类名称" name="name">
+	  	  </div>
+	  	  <input type="hidden" name="op" value="add">
+
+	  	  <button type="submit" class="btn btn-default">添加</button>
+	  	</form>
+	  	{{end}}
+	  	<table class="table table-striped">
+	  		<thead>
+	  			<tr>
+	  				<th>#</th>
+	  				<th>名称</th>
+	  				<th>文章数</th>
+	  				<th>操作</th>
+	  			</tr>
+	  		</thead>
+	  		<tbody>
+	  			{{range .Categories}}
+	  			<tr>
+	  				<th>{{.id}}</th>
+	  				<th>{{.title}}</th>
+	  				<th>{{.topiccount}}</th>
+	  				<th>
+	  					<a href="/category?op=del&id={{.id}}">删除</a>
+	  				</th>	
+	  			</tr>  				
+	  			{{end}}
+	  		</tbody>
+	  	</table>
+	  </div>
+
+	  <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	  <script type="text/javascript">
+	  	console.log("111111111")
+	  	console.log({{.Categories}})
+	  </script>
+  </body> 
+</html>

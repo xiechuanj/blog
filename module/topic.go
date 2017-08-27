@@ -14,14 +14,6 @@ import (
 	"time"
 )
 
-var (
-	createTopicChan chan bool
-)
-
-func init() {
-	createTopicChan = make(chan bool, 1)
-}
-
 func GetTopics() ([]map[string]interface{}, error) {
 	resultMap := make([]map[string]interface{}, 0)
 	topicList := make([]models.Topic, 0)
@@ -53,11 +45,11 @@ func GetTopics() ([]map[string]interface{}, error) {
 	return resultMap, nil
 }
 
-func CreateTopic(uid int64, title, content string) (string, error) {
-	createTopicChan <- true
-	defer func() {
-		<-createTopicChan
-	}()
+func CreateTopic(title, content string) (string, error) {
+	// createTopicChan <- true
+	// defer func() {
+	// 	<-createTopicChan
+	// }()
 
 	var count int64
 	err := new(models.Topic).GetTopic().Where("title = ?", title).Order("-id").Count(&count).Error
@@ -69,10 +61,11 @@ func CreateTopic(uid int64, title, content string) (string, error) {
 		return "", errors.New("topic name is exist!")
 	}
 	topicInfo := new(models.Topic)
-	topicInfo.Uid = uid
+	// topicInfo.Uid = uid
 	topicInfo.Title = strings.TrimSpace(title)
 	topicInfo.Content = strings.TrimSpace(content)
 	topicInfo.Created = time.Now().Format("2006-01-02 15:04:05")
+	topicInfo.Updated = time.Now().Format("2006-01-02 15:04:05")
 
 	err = topicInfo.GetTopic().Save(topicInfo).Error
 	if err != nil {
