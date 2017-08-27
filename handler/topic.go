@@ -2,13 +2,13 @@ package handler
 
 import (
 	// "encoding/json"
-	// "fmt"
+	"fmt"
 	// "github.com/xiechuanj/blog/models"
 	log "github.com/Sirupsen/logrus"
 	"github.com/xiechuanj/blog/module"
 	"gopkg.in/macaron.v1"
 	// "net/http"
-	// "strconv"
+	"strconv"
 	// "errors"
 )
 
@@ -33,6 +33,20 @@ func TopicAdd(ctx *macaron.Context) {
 	ctx.HTML(200, "topic_add")
 }
 
+func TopicView(ctx *macaron.Context) {
+	ctx.Data["IsTopic"] = true
+	ctx.Data["IsLogin"] = checkAccount(ctx)
+	topicId, _ := strconv.ParseInt(ctx.Params(":topicId"), 10, 64)
+	var err error
+	ctx.Data["Topic"], err = module.GetTopic(topicId)
+	if err != nil {
+		log.Info(err.Error())
+		ctx.Redirect("/", 302)
+		return
+	}
+	ctx.HTML(200, "topic_view")
+}
+
 type TopicAddForm struct {
 	// Uid     string `form:"uid" binding:"Required"`
 	Title   string `form:"title" binding:"Required"`
@@ -40,7 +54,8 @@ type TopicAddForm struct {
 }
 
 func TopicPost(ctx *macaron.Context, tp TopicAddForm) {
-
+	// op := ctx.QueryInt64("op")
+	fmt.Println(tp.Title)
 	if !checkAccount(ctx) {
 		ctx.Redirect("/login", 302)
 		return
@@ -56,6 +71,36 @@ func TopicPost(ctx *macaron.Context, tp TopicAddForm) {
 	return
 
 }
+
+func ModifyTopic(ctx *macaron.Context) {
+
+	ctx.Data["IsTopic"] = true
+	ctx.Data["IsLogin"] = checkAccount(ctx)
+	tid := ctx.QueryInt64("tid")
+
+	var err error
+	ctx.Data["Topic"], err = module.GetTopic(tid)
+	if err != nil {
+		log.Info(err.Error())
+	}
+	ctx.Data["Tid"] = tid
+	ctx.HTML(200, "topic_modify")
+}
+
+// func ViewTopic(ctx *macaron.Context) {
+// 	result, _ := json.Marshal(map[string]string{"message": ""})
+
+// 	id, _ := strconv.ParseInt(ctx.Params(":topic"), 10, 64)
+
+// 	resultMap, err := module.GetTopic(id)
+// 	if err != nil {
+// 		result, _ = json.Marshal(map[string]string{"errMsg": "error when get topic info:" + err.Error()})
+// 		return http.StatusBadRequest, result
+// 	}
+
+// 	result, _ = json.Marshal(resultMap)
+// 	return http.StatusOK, result
+// }
 
 // func GetTopics(ctx *macaron.Context) (int, []byte) {
 // 	result, _ := json.Marshal(map[string]string{"message": ""})

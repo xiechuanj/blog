@@ -1,6 +1,6 @@
 {{template "base/header" .}}
 
-    <title>首页 - 小船的博客</title>
+    <title>{{.Topic.title}} - 小船的博客</title>
   </head> 
   <body> 
 	  <div class="navbar navbar-default navbar-fixed-top">
@@ -8,17 +8,15 @@
   		{{template "base/navbar" .}}
   		</div>
 	  <div class="container">
-	  	{{range .Topics}}
+	  	
 	  	<div class="page-header">
 	  	    <br>
-	  	    <input type="hidden" name="topicid" value="{{.id}}">
-	  		<h1>{{.title}}</h1>
-	  		<h6 class="text-muted">文章发表于{{.created}}， 共有{{.views}} 次浏览， {{.replycount}}个评论</h6>
-	  		<p>
-	  			{{.content}}
-	  		</p>
+	  	   
+	  		<h1>{{.Topic.title}}{{if .IsLogin}}<a href="/topic/modify?tid={{.Topic.id}}" class="btn btn-default">修改文章</a>{{end}}</h1>
+
+	  		{{.Topic.content}}
+	  			 
 	  	</div>
-	  	{{end}}
 	  </div>
 
 	  <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>

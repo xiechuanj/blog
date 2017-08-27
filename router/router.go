@@ -21,6 +21,10 @@ func SetRouters(m *macaron.Macaron) {
 		m.Get("", handler.GetTopics)
 		m.Get("/add", handler.TopicAdd)
 		m.Post("", binding.Bind(handler.TopicAddForm{}), handler.TopicPost)
+
+		m.Get("/:topicId", handler.TopicView)
+		m.Get("/modify", handler.ModifyTopic)
+		// m.Delete("/:topicId", handler.DeleteTopic)
 	})
 	// m.Group("/v1", func() {
 	// 	m.Get("/", handler.IndexV1Handler)
