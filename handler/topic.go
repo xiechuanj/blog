@@ -3,12 +3,12 @@ package handler
 import (
 	// "encoding/json"
 	"fmt"
-	// "github.com/xiechuanj/blog/models"
 	log "github.com/Sirupsen/logrus"
+	"github.com/xiechuanj/blog/models"
 	"github.com/xiechuanj/blog/module"
 	"gopkg.in/macaron.v1"
-	// "net/http"
 	"strconv"
+	"time"
 	// "errors"
 )
 
@@ -48,54 +48,93 @@ func TopicView(ctx *macaron.Context) {
 }
 
 type TopicAddForm struct {
-	// Uid     string `form:"uid" binding:"Required"`
+	// Tid     string `form:"tid" binding:""`
 	Title   string `form:"title" binding:"Required"`
 	Content string `form:"content" binding:"Required"`
 }
 
 func TopicPost(ctx *macaron.Context, tp TopicAddForm) {
-	// op := ctx.QueryInt64("op")
-	fmt.Println(tp.Title)
+	tid := ctx.QueryInt64("tid")
+
 	if !checkAccount(ctx) {
 		ctx.Redirect("/login", 302)
 		return
 	}
-	// uid := tp.Uid
+	// tid := tp.Tid
+	// fmt.Println(tid)
 	title := tp.Title
 	content := tp.Content
-	_, err := module.CreateTopic(title, content)
-	if err != nil {
-		log.Info(err.Error())
+	var err error
+	if tid == 0 {
+		_, err := module.CreateTopic(title, content)
+		if err != nil {
+			log.Info(err.Error())
+		}
+	} else {
+		topicInfo := new(models.Topic)
+		err = topicInfo.GetTopic().Where("id = ?", tid).Find(&topicInfo).Error
+		if err != nil {
+			log.Error(err.Error())
+			return
+		}
+		// topicInfo.ID = tid
+		topicInfo.Title = title
+		topicInfo.Content = content
+		topicInfo.Updated = time.Now().Format("2006-01-02 15:04:05")
+		err = module.UpdateTopic(*topicInfo)
+		if err != nil {
+			log.Info(err.Error())
+		}
 	}
 	ctx.Redirect("/topic", 302)
 	return
 
 }
 
-type TopicModifyForm struct {
-	Id      string `form:"uid" binding:"Required"`
-	Title   string `form:"title" binding:"Required"`
-	Content string `form:"content" binding:"Required"`
-}
+// type TopicModifyForm struct {
+// 	Id      string `form:"id" binding:"Required"`
+// 	Title   string `form:"title" binding:"Required"`
+// 	Content string `form:"content" binding:"Required"`
+// }
 
-func TopicPut(ctx *macaron.Context, tp TopicModifyForm) {
-	// op := ctx.QueryInt64("op")
-	fmt.Println(tp.Title)
-	if !checkAccount(ctx) {
-		ctx.Redirect("/login", 302)
-		return
-	}
-	// uid := tp.Uid
-	title := tp.Title
-	content := tp.Content
-	_, err := module.CreateTopic(title, content)
-	if err != nil {
-		log.Info(err.Error())
-	}
-	ctx.Redirect("/topic", 302)
-	return
+// func TopicPut(ctx *macaron.Context, tp TopicModifyForm) {
+// 	// op := ctx.QueryInt64("op")
+// 	fmt.Println(tp.Id)
+// 	fmt.Println(tp.Title)
+// 	fmt.Println(tp.Content)
+// 	if !checkAccount(ctx) {
+// 		ctx.Redirect("/login", 302)
+// 		return
+// 	}
 
-}
+// 	// topicInfo := new(models.Topic)
+// 	// err = topicInfo.GetTopic().Where("id = ?", body.ID).Find(&topicInfo).Error
+// 	// if err != nil {
+// 	// 	result, _ = json.Marshal(map[string]string{"errMsg": "error when get topic info from db:" + err.Error()})
+// 	// 	return http.StatusBadRequest, result
+// 	// }
+
+// 	// if topicInfo.ID == 0 {
+// 	// 	result, _ = json.Marshal(map[string]string{"errMsg": "topic is not exist"})
+// 	// 	return http.StatusBadRequest, result
+// 	// }
+
+// 	// topicInfo.Uid = body.Uid
+// 	// topicInfo.Title = body.Title
+// 	// topicInfo.Content = body.Content
+// 	// topicInfo.Updated = time.Now().Format("2006-01-02 15:04:05")
+// 	// err = module.UpdateTopic(*topicInfo)
+// 	// // uid := tp.Uid
+// 	// title := tp.Title
+// 	// content := tp.Content
+// 	// _, err := module.UpdateTopic(title, content)
+// 	// if err != nil {
+// 	// 	log.Info(err.Error())
+// 	// }
+// 	ctx.Redirect("/topic", 302)
+// 	return
+
+// }
 
 func ModifyTopic(ctx *macaron.Context) {
 
