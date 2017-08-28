@@ -72,6 +72,31 @@ func TopicPost(ctx *macaron.Context, tp TopicAddForm) {
 
 }
 
+type TopicModifyForm struct {
+	Id      string `form:"uid" binding:"Required"`
+	Title   string `form:"title" binding:"Required"`
+	Content string `form:"content" binding:"Required"`
+}
+
+func TopicPut(ctx *macaron.Context, tp TopicModifyForm) {
+	// op := ctx.QueryInt64("op")
+	fmt.Println(tp.Title)
+	if !checkAccount(ctx) {
+		ctx.Redirect("/login", 302)
+		return
+	}
+	// uid := tp.Uid
+	title := tp.Title
+	content := tp.Content
+	_, err := module.CreateTopic(title, content)
+	if err != nil {
+		log.Info(err.Error())
+	}
+	ctx.Redirect("/topic", 302)
+	return
+
+}
+
 func ModifyTopic(ctx *macaron.Context) {
 
 	ctx.Data["IsTopic"] = true
