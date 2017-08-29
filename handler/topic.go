@@ -2,7 +2,7 @@ package handler
 
 import (
 	// "encoding/json"
-	"fmt"
+	// "fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/xiechuanj/blog/models"
 	"github.com/xiechuanj/blog/module"
