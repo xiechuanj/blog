@@ -1,14 +1,19 @@
 {{template "base/header" .}}
 
     <title>{{.Topic.title}} - 小船的博客</title>
-
+    <script type="text/javascript">
+    	 document.body.css({
+   "overflow-x":"auto",
+   "overflow-y":"auto"
+ });
+    </script>
   </head> 
-  <body> 
+  <body  > 
 	  <div class="navbar navbar-default navbar-fixed-top">
 	  	<div class="container">
   		{{template "base/navbar" .}}
   		</div>
-	  <div class="container">
+	  <div class="container"  style="width:1000px;height:550px;overflow:auto;">
 	  	
 	  	<div class="page-header">
 	  	    <br>
@@ -22,11 +27,20 @@
 
 	  <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 	  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	  <!-- <script type="text/javascript" src="/js/bootstrap.min.js"></script> -->
 	  <script type="text/javascript">
 		 oldcontent=document.getElementById("content").innerHTML;
 		 newcontent=oldcontent.replace(/\r{0,}\n/g,"<br/>").replace(/\s/g,"&nbsp;");
 		 console.log(newcontent);
 		 document.getElementById("content").innerHTML=newcontent; 
-	  </script>
+		//  window.onscroll = function () { 
+		//  var t = document.documentElement.scrollTop || document.body.scrollTop;
+		//  if (t > 0) { 
+		//  $(".cbbfixed").css("bottom", "10px"); 
+		//  } else { 
+		//  $(".cbbfixed").css("bottom", "-85px"); 
+		//  } 
+		// }
+		</script>
   </body> 
 </html>
