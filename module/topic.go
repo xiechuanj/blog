@@ -28,7 +28,7 @@ func GetTopics() ([]map[string]interface{}, error) {
 		topicsMap["id"] = topicInfo.ID
 		topicsMap["uid"] = topicInfo.Uid
 		topicsMap["title"] = topicInfo.Title
-		topicsMap["content"] = topicInfo.Content
+		topicsMap["content"] = strings.Split(topicInfo.Content, "\n")[0]
 		topicsMap["attachment"] = topicInfo.Attachment
 		topicsMap["created"] = topicInfo.Created
 		topicsMap["updated"] = topicInfo.Updated

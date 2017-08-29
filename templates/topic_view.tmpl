@@ -1,6 +1,7 @@
 {{template "base/header" .}}
 
     <title>{{.Topic.title}} - 小船的博客</title>
+
   </head> 
   <body> 
 	  <div class="navbar navbar-default navbar-fixed-top">
@@ -13,13 +14,19 @@
 	  	    <br>
 	  	   
 	  		<h1>{{.Topic.title}}{{if .IsLogin}}<a href="/topic/modify?tid={{.Topic.id}}" class="btn btn-default">修改文章</a>{{end}}</h1>
-
+	  		<div id="content">
 	  		{{.Topic.content}}
-	  			 
+	  		</div>
 	  	</div>
 	  </div>
 
 	  <script type="text/javascript" src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 	  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	  <script type="text/javascript">
+		 oldcontent=document.getElementById("content").innerHTML;
+		 newcontent=oldcontent.replace(/\r{0,}\n/g,"<br/>").replace(/\s/g,"&nbsp;");
+		 console.log(newcontent);
+		 document.getElementById("content").innerHTML=newcontent; 
+	  </script>
   </body> 
 </html>

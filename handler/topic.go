@@ -8,8 +8,8 @@ import (
 	"github.com/xiechuanj/blog/module"
 	"gopkg.in/macaron.v1"
 	"strconv"
+	// "strings"
 	"time"
-	// "errors"
 )
 
 func GetTopics(ctx *macaron.Context) {
